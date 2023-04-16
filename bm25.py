@@ -21,6 +21,8 @@ parser.add_argument("--ngram_1", type=int, default=4,
                     help="ngram")
 parser.add_argument("--ngram_2", type=int, default=4,
                     help="ngram")
+parser.add_argument("--topk", type=int, default=5,
+                    help="select top-k cases as final prediction")
 args = parser.parse_args()
 
 ## Data labels
@@ -164,7 +166,7 @@ for i in tqdm(pred_df.index):
     pred_list = pred_list_0.split("['")[1].split("']")[0].split("', '")
     
     # top-k prediction
-    k = 5
+    k = args.topk
 
     c_p, r_c = micro_prec(true_list, pred_list, k)
     correct_pred += c_p

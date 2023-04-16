@@ -5,10 +5,10 @@ This method does French removal preprocessing and employs the ngram BM25 model t
 Download dataset from [COLIEE 2023](https://sites.ualberta.ca/~rabelo/COLIEE2023/).
 Put the folder `task1_test_files_2023` and label file `task1_test_labels_2023.json` in root `./`.
 
-Run `python3 bm25.py --ngram_1 $A --ngram_2 $B`.
+Run `python3 bm25.py --ngram_1 $A --ngram_2 $B --topk $C`.
 
 # Performance
-When `$A`, `$B` are chosen from `1-6`, the performances of F1 score are
+When `$A`, `$B` are chosen from `1-6` and `$C=5`, the performances of F1 score are
 
 $A \ $B | 1 | 2 | 3 | 4 | 5 | 6 |
 --------- | --------|--------| --------| --------| --------| --------|
