@@ -23,16 +23,24 @@ parser.add_argument("--ngram_2", type=int, default=4,
                     help="ngram")
 parser.add_argument("--topk", type=int, default=5,
                     help="select top-k cases as final prediction")
+parser.add_argument("--mode", type=str, default='test',
+                    help="train or test")
 args = parser.parse_args()
 
-## Data labels
-with open('./task1_test_labels_2023.json', 'r') as f:
-    noticed_case_list = json.load(f)
-    f.close()
+## Data and label file path
+if args.mode == 'train':
+    with open('./task1_train_labels_2023.json', 'r') as f:
+        noticed_case_list = json.load(f)
+        f.close()
+    RDIR = './task1_train_files_2023'
+    WDIR = './train_preprocessed_files'
 
-## Files paths
-RDIR = './task1_test_files_2023'
-WDIR = './preprocessed_files'
+elif args.mode == 'test':
+    with open('./task1_test_labels_2023.json', 'r') as f:
+        noticed_case_list = json.load(f)
+        f.close()
+    RDIR = './task1_test_files_2023'
+    WDIR = './test_preprocessed_files'
 
 ## Data preprocessing starts
 files = os.listdir(RDIR)
@@ -146,12 +154,12 @@ for i in tqdm(range(len(query_corpus))):
     pred_df = pred_df.append({'Documend id': query_name, 'Noticed cases': noticed_case_list[query_name],'Numbers of noticed cases': len(noticed_case_list[query_name]), 'Prediction list': predictions},ignore_index=True)
 
 # create rsults directory
-pred_df.to_csv('./bm25_test_2023_ngarm('+ str(args.ngram_1) + str(args.ngram_2) +').csv')
+pred_df.to_csv('./bm25_' + args.mode + '_2023_ngarm('+ str(args.ngram_1) + str(args.ngram_2) +').csv')
 ## bm25 computing ends
 
 ## Evaluation starts
 print('ngram:', str(args.ngram_1), str(args.ngram_2))
-file_path = './bm25_test_2023_ngarm('+ str(args.ngram_1) + str(args.ngram_2) +').csv'
+file_path = './bm25_' + args.mode + '_2023_ngarm('+ str(args.ngram_1) + str(args.ngram_2) +').csv'
 with open(file_path, 'r')as csvfile:
     pred_df = pd.read_csv(csvfile, delimiter=',')
     csvfile.close()
